@@ -14,13 +14,9 @@ import KaamelottControl.DisplayText;
 public class Kaamelott {
     public static void main(String [] args)
 	{
-        
-        
-        
-            DisplayText display=new DisplayText();
-		Scenario scenario=new Scenario(display);
-                scenario.makeScenario();
-                scenario.readScenario();
+		    Scenario scenario=new Scenario();
+            scenario.makeScenario();
+            scenario.readScenario();
                 
 	}
 }

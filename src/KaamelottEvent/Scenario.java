@@ -11,6 +11,7 @@ import KaamelottCharacter.Characteristic;
 import KaamelottCharacter.*;
 import KaamelottControl.*;
 import KaamelottControl.DisplayText;
+import KaamelottGraphical.UI;
 import KaamelottItemization.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +25,15 @@ public class Scenario {
     private List<Event> events;
     private DisplayText display;
     private List<Team> teams;
+    private UI ui;
 
-    public Scenario(DisplayText display) {
-        this.display = display;
-        teams=new ArrayList(); 
-        events=new ArrayList(); 
+    public Scenario() {
+        this.display = new DisplayText();
+        ui = new UI();
+        teams = new ArrayList();
+        events = new ArrayList();
     }
 
-    public Scenario(List<Event> events, DisplayText display) {
-        this.events = events;
-        this.display = display;
-    }
   
     public void addEvent(Event event){
         events.add(event);
