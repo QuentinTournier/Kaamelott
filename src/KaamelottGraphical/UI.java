@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -22,6 +24,10 @@ import javax.swing.border.Border;
 
 public class UI extends JFrame implements ActionListener, ItemListener {
     private JPanel panel;
+    JTextField  testField1 = null;
+    private  JFrame f;
+    private int result = 0;
+
 
     public UI() {
         this.setTitle("Test radio boutons");
@@ -29,59 +35,114 @@ public class UI extends JFrame implements ActionListener, ItemListener {
         panel = new JPanel(new GridLayout(0, 1));
         Border border = BorderFactory.createTitledBorder("Sélection");
         panel.setBorder(border);
-
-        getName();
-
         Container contentPane = this.getContentPane();
         contentPane.add(panel, BorderLayout.CENTER);
-        this.setSize(300, 150);
-        this.setVisible(true);
+        f = new JFrame("Kaamelott");
+        f.setSize(600, 400);
+
+        getNumber("Chose an action \n 1. Use Potion"+"\n"
+                +" 2. Equip Character"+"\n"
+                +" 3. View Stats"+"\n"
+                +" 4. Continue adventure"+"\n");
+        display("hihihihihi");
+        getName();
     }
 
-    public void display(){
-        //write code to display a text until button pressed
+    public void display(String message){
+        JButton b =new JButton(message);
+        f.getContentPane().add(b);
+        b.addActionListener( new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               synchronized (b) { b.notify(); }
+           }
+        });
+
+        panel.add(b);
+        f.getContentPane().add(panel);
+        f.setVisible(true);
+        try{
+            synchronized (b) {
+                b.wait();
+            }
+        }catch (java.lang.InterruptedException ie){
+            System.out.println("voila");
+        }
+        System.out.println("-------------------------");
+        panel.remove(b);
+        f.setVisible(true);
     }
 
-    public int getNumber(){
-        //write code to display a message and a choice
-        return 0;
+    public int getNumber(String message){
+        String[] parts = message.split("[0-9]");
+        String waitThing = "wait";
+        List<JButton> listButton = new ArrayList();
+        for(int i = 1; i<parts.length; i++){
+            int k = i;
+            listButton.add(new JButton(parts[i].replaceAll("\n|\\.", "")));
+            listButton.get(i-1).addActionListener( new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    result = k;
+                    synchronized (waitThing) { waitThing.notify(); }
+                }
+            });
+            panel.add(listButton.get(i-1));
+        }
+
+        f.getContentPane().add(panel);
+        f.setVisible(true);
+        try{
+            synchronized (waitThing) {
+                waitThing.wait();
+            }
+        }catch (java.lang.InterruptedException ie){
+            System.out.println("voila");
+        }
+        for(int i=0; i<listButton.size();i++){
+            panel.remove(listButton.get(i));
+        }
+        f.setVisible(true);
+        System.out.println(result);
+        return result;
     }
 
     public String getName(){
-        ButtonGroup group = new ButtonGroup();
 
-        JRadioButton radio1 = new JRadioButton("Choix 1");
-        radio1.setMnemonic(KeyEvent.VK_1);
-        radio1.setActionCommand("Choix_1");
-        radio1.setSelected(true);
+        testField1 = new JTextField ("                   ");
 
-        JRadioButton radio2 = new JRadioButton("Choix 2");
-        radio2.setMnemonic(KeyEvent.VK_2);
-        radio2.setActionCommand("Choix_2");
+        panel.add(testField1);
+        f.getContentPane().add(panel);
 
-        JRadioButton radio3 = new JRadioButton("Choix 3");
-        radio3.setMnemonic(KeyEvent.VK_3);
-        radio3.setActionCommand("Choix_3");
+        JButton bouton1 = new JButton("Bouton1");
+        bouton1.addActionListener( new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               synchronized (bouton1) {
+                   if(!testField1.getText().trim().isEmpty()){
+                       bouton1.notify();
+                   }
+               }
+           }
+        });
 
-        group.add(radio1);
-        panel.add(radio1);
-        group.add(radio2);
-        panel.add(radio2);
-        group.add(radio3);
-        panel.add(radio3);
-
-        radio1.addActionListener(this);
-        radio2.addActionListener(this);
-        radio3.addActionListener(this);
-        radio1.addItemListener(this);
-        radio2.addItemListener(this);
-        radio3.addItemListener(this);
-        return null;
+        panel.add(bouton1);
+        f.getContentPane().add(panel);
+        f.setVisible(true);
+        try{
+            synchronized (bouton1) {
+                bouton1.wait();
+            }
+        }catch (java.lang.InterruptedException ie){
+            System.out.println("voila");
+        }
+        String textToReturn = new String(testField1.getText());
+        panel.remove(bouton1);
+        panel.remove(testField1);
+        f.setVisible(true);
+        return textToReturn;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Clic sur le bouton : " + e.getActionCommand());
+        //System.out.println("texte saisie = " + testField1.getText());
     }
 
     @Override
