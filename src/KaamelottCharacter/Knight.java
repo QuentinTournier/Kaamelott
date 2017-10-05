@@ -1,20 +1,21 @@
 package KaamelottCharacter;
 
 import KaamelottCapacities.Attack;
+import KaamelottControl.GameInterface;
 import KaamelottItemization.Item;
 import KaamelottItemization.Weapon;
 
 public final class Knight extends Character {
     
     
-    public Knight(String name) {
+    public Knight(GameInterface gi,String name) {
        
-        this(name,1);
+        this(gi, name,1);
     }
     
-    public Knight(String name,int level) {
+    public Knight(GameInterface gi, String name, int level) {
        
-        super(name,"Knight",level);
+        super(gi, name,"Knight",level);
         this.characteristic.put(Characteristic.STRENGTH,50+2*(level-1));
         this.characteristic.put(Characteristic.DEXTERITY,25+2*(level-1));
         this.characteristic.put(Characteristic.INTELLIGENCE,0+2*(level-1));

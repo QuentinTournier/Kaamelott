@@ -11,7 +11,7 @@ import java.util.Scanner;
  *
  * @author p1306434
  */
-public class DisplayText {
+public class DisplayText implements GameInterface {
     String message;
     Scanner sc;
 
@@ -22,7 +22,7 @@ public class DisplayText {
     public DisplayText() {
     }
     
-    
+    public void init(){}
 
     public DisplayText(String message) {
         this.message = message;
@@ -32,7 +32,13 @@ public class DisplayText {
         message=mess;
         System.out.println(message);
     }
-    
+
+    @Override
+    public int getNumber(String message) {
+        return getNumber(1,3,message,"erreur");
+    }
+
+
     public String getName(String message){
         display(message);
         Scanner sc = new Scanner(System.in);
@@ -65,6 +71,8 @@ public class DisplayText {
         return messageRet;
        
     }
+
+
     public int getNumber(int min,int max,String mess,String messError){
         
         display(mess);

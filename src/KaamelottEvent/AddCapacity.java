@@ -7,13 +7,14 @@ package KaamelottEvent;
 
 import KaamelottCapacities.*;
 import KaamelottControl.DisplayText;
+import KaamelottControl.GameInterface;
 import KaamelottControl.Team;
 
 /**
  *
  * @author Kalo
  */
-public class AddCapacity implements Event {
+public class AddCapacity extends Event {
     private final int Type=0;
     private Capacity capacity;
     private Team team;
@@ -22,7 +23,8 @@ public class AddCapacity implements Event {
     }
 
 
-    public AddCapacity( int nbCapacity) {
+    public AddCapacity(GameInterface gi, int nbCapacity) {
+        super(gi);
         this.capacity = getCapacityI(nbCapacity);
     }
     
@@ -37,7 +39,7 @@ public class AddCapacity implements Event {
                mess=mess+i+"-"+team.getCharacterI(i).getName()+"\n";
            }
         String messError="Please chose a number between 0 and "+ (max-1);
-        int nbCharac=display.getNumber(0,max-1,mess,messError);
+        int nbCharac=gi.getNumber(mess);
         
         team.getCharacterI(nbCharac).addCapacity(capacity);
     }

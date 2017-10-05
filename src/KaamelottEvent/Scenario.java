@@ -6,13 +6,11 @@
 
 package KaamelottEvent;
 
-import KaamelottCapacities.*;
-import KaamelottCharacter.Characteristic;
 import KaamelottCharacter.*;
 import KaamelottControl.*;
 import KaamelottControl.DisplayText;
-import KaamelottGraphical.UI;
-import KaamelottItemization.*;
+import KaamelottControl.UI;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +23,12 @@ public class Scenario {
     private List<Event> events;
     private DisplayText display;
     private List<Team> teams;
-    private UI ui;
+    private GameInterface ui;
 
     public Scenario() {
         this.display = new DisplayText();
         ui = new UI();
+        ui.init();
         teams = new ArrayList();
         events = new ArrayList();
     }
@@ -40,7 +39,7 @@ public class Scenario {
     }
     public void addTeam(){
         List<KaamelottCharacter.Character> members=new ArrayList();     
-        Team teamA=new Team(members,0);
+        Team teamA=new Team(ui,members,0);
         teams.add(teamA);
     }
     
@@ -92,34 +91,34 @@ public class Scenario {
         addTeam();    
         //team 1
         addTeam();
-         teams.get(1).addCharacterTeam(new Druid("XxNecroxX"));
-         teams.get(1).addCharacterTeam(new Druid("OoNecrooO"));
+         teams.get(1).addCharacterTeam(new Druid(ui, "XxNecroxX"));
+         teams.get(1).addCharacterTeam(new Druid(ui, "OoNecrooO"));
         //team 2
         addTeam();
-        teams.get(2).addCharacterTeam(new Crossbowman("Bobo"));
-        teams.get(2).addCharacterTeam(new Druid("Bobheal"));
+        teams.get(2).addCharacterTeam(new Crossbowman(ui, "Bobo"));
+        teams.get(2).addCharacterTeam(new Druid(ui, "Bobheal"));
         //team 3
         addTeam();
-        teams.get(3).addCharacterTeam(new Knight("Roukie"));
-        teams.get(3).addCharacterTeam(new Thief("Roumain"));
-        teams.get(3).addCharacterTeam(new Thief("Roucool"));
+        teams.get(3).addCharacterTeam(new Knight(ui, "Roukie"));
+        teams.get(3).addCharacterTeam(new Thief(ui, "Roumain"));
+        teams.get(3).addCharacterTeam(new Thief(ui, "Roucool"));
         //team 4
         addTeam();
-        teams.get(4).addCharacterTeam(new Warrior("Dragunov"));
-        teams.get(4).addCharacterTeam(new Knight("IG0R"));
-        teams.get(4).addCharacterTeam(new Knight("Apalkov"));
+        teams.get(4).addCharacterTeam(new Warrior(ui, "Dragunov"));
+        teams.get(4).addCharacterTeam(new Knight(ui, "IG0R"));
+        teams.get(4).addCharacterTeam(new Knight(ui, "Apalkov"));
         //team 5
         addTeam();
-        teams.get(5).addCharacterTeam(new Knight("Leonardo"));
-        teams.get(5).addCharacterTeam(new Thief("Donatello"));
-        teams.get(5).addCharacterTeam(new Warrior("Michelangelo"));
-        teams.get(5).addCharacterTeam(new Crossbowman("Raphael"));
+        teams.get(5).addCharacterTeam(new Knight(ui, "Leonardo"));
+        teams.get(5).addCharacterTeam(new Thief(ui, "Donatello"));
+        teams.get(5).addCharacterTeam(new Warrior(ui, "Michelangelo"));
+        teams.get(5).addCharacterTeam(new Crossbowman(ui, "Raphael"));
         //team 6
         addTeam();
-        teams.get(6).addCharacterTeam(new Druid("DarkHole"));
-        teams.get(6).addCharacterTeam(new Druid("DarkWizard"));
-        teams.get(6).addCharacterTeam(new Druid("DarkSidius"));
-        teams.get(6).addCharacterTeam(new Druid("DarkMaul"));
+        teams.get(6).addCharacterTeam(new Druid(ui, "DarkHole"));
+        teams.get(6).addCharacterTeam(new Druid(ui, "DarkWizard"));
+        teams.get(6).addCharacterTeam(new Druid(ui, "DarkSidius"));
+        teams.get(6).addCharacterTeam(new Druid(ui, "DarkMaul"));
         
         
         
@@ -127,20 +126,20 @@ public class Scenario {
     }
     
     public void gainObject(int  nbItem){
-        AddItem addItem= new AddItem(teams.get(0),nbItem);
+        AddItem addItem= new AddItem(ui, teams.get(0),nbItem);
          addEvent(addItem);
     }
     
     public Fight makeFight(Team teamA,Team teamB,int xp )
     {        
 
-        Fight fight=new Fight(teamA,teamB,display,xp);
+        Fight fight=new Fight(ui, teamA,teamB,xp);
         return fight;
     }
     
     public CreateCharacter makeCreateCharacter()
     {
-        CreateCharacter create=new CreateCharacter(display);
+        CreateCharacter create=new CreateCharacter(ui);
         return create;
     }
     
@@ -148,20 +147,20 @@ public class Scenario {
     {
         List<String> narration= new ArrayList();
         
-        Narrative tell =new Narrative(narration,display,teams.get(0),numTell);   
+        Narrative tell =new Narrative(ui,narration,teams.get(0),numTell);
         return tell;
     }
     public AddCapacity makeCapacity(int nbCapacity)
     {
         
-        AddCapacity addCapacity= new AddCapacity(nbCapacity);   
+        AddCapacity addCapacity= new AddCapacity(ui, nbCapacity);
         return addCapacity;
     }
     
      public void readScenario()
     {
-        display.display("In this story, the 1st character you chose will be the main character, and the two followings will be his partners");
-        display.display("If you want, you can call the main character Arthur, and his partners Lancelot and Merlin");
+        ui.display("In this story, the 1st character you chose will be the main character, and the two followings will be his partners");
+        ui.display("If you want, you can call the main character Arthur, and his partners Lancelot and Merlin");
         for(int i=0;i<events.size();i++)
         {
 
@@ -191,7 +190,7 @@ public class Scenario {
         int number=0;
         if(events.get(i).getType()==2 ||events.get(i).getType()==4){
         while (number!=4){
-        number=display.getNumber(1,4,message,messError);
+        number = ui.getNumber(message);
         switch (number) {
             case 1:  teams.get(0).takeObject();
                      break;

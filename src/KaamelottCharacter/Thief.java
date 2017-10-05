@@ -1,16 +1,17 @@
 package KaamelottCharacter;
 
 import KaamelottCapacities.Attack;
+import KaamelottControl.GameInterface;
 
 public class Thief extends Character {
     
-    public Thief(String name) {
+    public Thief(GameInterface gi,String name) {
 
-        this(name,1);
+        this(gi, name,1);
     }
-    public Thief(String name,int level) {
+    public Thief(GameInterface gi, String name, int level) {
 
-        super(name,"Thief",level);
+        super(gi, name,"Thief",level);
         this.characteristic.put(Characteristic.STRENGTH,20+2*(level-1));
         this.characteristic.put(Characteristic.DEXTERITY,40+2*(level-1));
         this.characteristic.put(Characteristic.INTELLIGENCE,10+2*(level-1));

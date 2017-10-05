@@ -1,4 +1,4 @@
-package KaamelottGraphical;
+package KaamelottControl;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -22,14 +22,14 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
-public class UI extends JFrame implements ActionListener, ItemListener {
+public class UI extends JFrame implements ActionListener, ItemListener, GameInterface {
     private JPanel panel;
     JTextField  testField1 = null;
     private  JFrame f;
     private int result = 0;
 
 
-    public UI() {
+    public void init() {
         this.setTitle("Test radio boutons");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel(new GridLayout(0, 1));
@@ -39,13 +39,6 @@ public class UI extends JFrame implements ActionListener, ItemListener {
         contentPane.add(panel, BorderLayout.CENTER);
         f = new JFrame("Kaamelott");
         f.setSize(600, 400);
-
-        getNumber("Chose an action \n 1. Use Potion"+"\n"
-                +" 2. Equip Character"+"\n"
-                +" 3. View Stats"+"\n"
-                +" 4. Continue adventure"+"\n");
-        display("hihihihihi");
-        getName();
     }
 
     public void display(String message){
@@ -105,7 +98,7 @@ public class UI extends JFrame implements ActionListener, ItemListener {
         return result;
     }
 
-    public String getName(){
+    public String getName(String message){
 
         testField1 = new JTextField ("                   ");
 

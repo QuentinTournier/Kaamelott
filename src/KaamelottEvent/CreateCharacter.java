@@ -6,6 +6,7 @@
 package KaamelottEvent;
 
 import KaamelottControl.DisplayText;
+import KaamelottControl.GameInterface;
 import KaamelottControl.Team;
 import KaamelottCharacter.*;
 
@@ -13,27 +14,23 @@ import KaamelottCharacter.*;
  *
  * @author nitnek
  */
-public class CreateCharacter implements Event{
+public class CreateCharacter extends Event{
     
 
-    private DisplayText display;   
     private final int type=1;
     private static int nbCharac=0;
     
-    public CreateCharacter(DisplayText display) {
-        this.display = display;
-        
+    public CreateCharacter(GameInterface gi) {
+        super(gi);
     }
 
     public int getType() {
         return type;
     }
-    
-    
-    
+
     public String askName(){
         String message="Chose the name of your hero";
-        return display.getName(message);
+        return gi.getName(message);
     }
     public int askType(){
         
@@ -49,7 +46,7 @@ public class CreateCharacter implements Event{
             +" 5.Warrior"+"\n";
         String messError="Chose a Number between "+min +" and "+max;
         
-        return display.getNumber(min,max,mess,messError);
+        return gi.getNumber(mess);
     }
     
     public void addCharac(Team team){
@@ -58,18 +55,18 @@ public class CreateCharacter implements Event{
         int choice=askType();
         String name=askName();
         switch (choice) {
-            case 1:  charac = new Crossbowman(name);
+            case 1:  charac = new Crossbowman(gi, name);
                      break;
-            case 2:  charac = new Druid(name);
+            case 2:  charac = new Druid(gi, name);
                      break;
-            case 3:  charac = new Knight(name);
+            case 3:  charac = new Knight(gi, name);
                      break;
-            case 4:  charac = new Thief(name);
+            case 4:  charac = new Thief(gi, name);
                      break;
-            case 5:  charac = new Warrior(name);
+            case 5:  charac = new Warrior(gi, name);
                      break;
-            default: {display.displayError(1);
-                    charac=new Crossbowman(name);
+            default: {System.out.println("error");
+                    charac=new Crossbowman(gi, name);
                      break;}
         }
     

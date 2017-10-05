@@ -10,20 +10,20 @@ import java.util.List;
 public class Turn {
     private final Team teamA;
     private final Team teamB;
-    DisplayText display;
     private List<Action> actionA;
     private List<Action> actionB;
     Controller contA;
     Controller contB;
+    GameInterface gi;
 
     
 
-    public Turn( Team teamA, Team teamB,Controller contA,Controller contB) {
+    public Turn(GameInterface gi, Team teamA, Team teamB,Controller contA,Controller contB) {
+        this.gi = gi;
         this.teamA = teamA;
         this.teamB = teamB;
         this.contA=contA;
         this.contB=contB;
-        display=new DisplayText();
         actionA= new ArrayList();
         actionB= new ArrayList();
         
@@ -82,7 +82,7 @@ public class Turn {
        
      if (Cont instanceof HumanController )
      {
-       return display.getListNumber(0,listNb,mess,"Please chose one of the integers");}
+       return gi.getNumber(mess);}
      else 
          return listNb.get(0);
    }
@@ -92,7 +92,7 @@ public class Turn {
         int num=0;
             String messError="chose a number between 0 and 1";
         if (cont instanceof HumanController)    
-                num= display.getNumber(0,1,mess,messError); 
+                num= gi.getNumber(mess);
         if (num==0)
            return choseAttack(cont,character);
         else
@@ -107,7 +107,7 @@ public class Turn {
             {mess=mess+"\n"+i+"-"+listConsumables.get(i).getName()+"("+listConsumables.get(i).getNumber()+")";}
             mess=mess+"\n"+max+" -Return";
             String messError="chose a number between 0 and "+max;
-       int num= display.getNumber(0,max,mess,messError); 
+       int num= gi.getNumber(mess);
        if(num==max)
            return choseAction(cont,character);
        
@@ -124,7 +124,7 @@ public class Turn {
         mess=mess+max+"-Return";
         
             String messError="chose a number between 0 and "+max;
-       int num= display.getNumber(0,max,mess,messError); 
+       int num= gi.getNumber(mess);
        if(num==max)
             return choseAction(cont,character);
             
@@ -144,7 +144,7 @@ public class Turn {
            changeTarget=true;
            if(teamA.getCharacterI(i).isAlive()){             
             if(contA instanceof HumanController)
-                   display.display("\n"+teamA.getCharacterI(i).getName()+" "+"must");
+                   gi.display("\n"+teamA.getCharacterI(i).getName()+" "+"must");
            actionA.add(choseAction(contA,teamA.getCharacterI(i)));
            getActionI(actionA,j).setSource(teamA.getCharacterI(i));
         
@@ -172,7 +172,7 @@ public class Turn {
             if(teamB.getCharacterI(i).isAlive()){
                 
                 if(contB instanceof HumanController)
-                    display.display("\n"+teamB.getCharacterI(i).getName()+" "+"must");
+                    gi.display("\n"+teamB.getCharacterI(i).getName()+" "+"must");
             actionB.add(choseAction(contB,teamB.getCharacterI(i)));
             getActionI(actionB,j).setSource(teamB.getCharacterI(i));
            
@@ -208,11 +208,11 @@ public class Turn {
            getActionI(actionB,i).doEffect().applyEffect(getActionI(actionB,i).getTarget());
            if(getActionI(actionB,i).getEffect().getValue()<0)
            {
-            display.display(getActionI(actionB,i).getTarget().getName()+ " lost "+ -getActionI(actionB,i).getEffect().getValue()+"HP");
+            gi.display(getActionI(actionB,i).getTarget().getName()+ " lost "+ -getActionI(actionB,i).getEffect().getValue()+"HP");
            }
            else
            {
-               display.display(getActionI(actionB,i).getTarget().getName()+ " won "+ getActionI(actionB,i).getEffect().getValue()+"HP");
+               gi.display(getActionI(actionB,i).getTarget().getName()+ " won "+ getActionI(actionB,i).getEffect().getValue()+"HP");
            }
            }
        }

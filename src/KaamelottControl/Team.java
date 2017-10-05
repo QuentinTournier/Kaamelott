@@ -18,6 +18,7 @@ import KaamelottCharacter.*;
 public class Team {
     private List<Character> characters;
     protected int teamNumber;
+    private GameInterface gi;
 
     
     
@@ -27,7 +28,8 @@ public class Team {
 
     }
 
-    public Team(List<Character> characters, int teamNumber) {
+    public Team(GameInterface gi, List<Character> characters, int teamNumber) {
+        this.gi =gi;
         this.characters = characters;
         this.teamNumber = teamNumber;
     }
@@ -38,9 +40,9 @@ public class Team {
         teamNumber++;
     }
     
-    public void fillTeam(int number){
-        for(int i=0;i<number;i++){
-            this.addCharacterTeam(new Thief("thief"+i)); 
+    public void fillTeam(int number) {
+        for (int i = 0; i < number; i++) {
+            this.addCharacterTeam(new Thief(gi, "thief" + i));
         }
     }
     
@@ -73,7 +75,6 @@ public class Team {
         return false;
     }
     public void equipCharacter(){
-        DisplayText display=new DisplayText();
         int max=characters.size();
         String mess="Which character do you wish to equip ?\n";
         for (int i=0;i<max;i++)
@@ -82,7 +83,7 @@ public class Team {
            }
         String messError="Please chose a number between 0 and "+max;
         mess=mess+max+"- Return";
-        int value=display.getNumber(0,max+1,mess,messError);
+        int value= gi.getNumber(mess);
         if (value==max)
             return ;
         characters.get(value).equip();
@@ -96,9 +97,8 @@ public class Team {
                 mess=mess+i+"-"+this.getCharacterI(i).getName()+"-"+this.getCharacterI(i).getHp()+"HP"+"\n";
             }
         String messError="Please chose a number between 0 and "+max;
-        DisplayText display=new DisplayText();
         mess=mess+max+"- Return";
-        int value=display.getNumber(0,max+1,mess,messError);
+        int value=gi.getNumber(mess);
         if (value==max)
             return ;
         characters.get(value).useConsumable();              
@@ -113,9 +113,8 @@ public class Team {
                 mess=mess+i+"-"+this.getCharacterI(i).getName()+"-"+this.getCharacterI(i).getHp()+"HP"+"\n";
             }
         String messError="Please chose a number between 0 and "+max;
-        DisplayText display=new DisplayText();
         mess=mess+max+"- Return";
-        int value=display.getNumber(0,max+1,mess,messError);
+        int value=gi.getNumber(mess);
         if (value==max)
             return ;
         characters.get(value).stats();        
@@ -130,7 +129,6 @@ public class Team {
 
     public void showHp(){
         int max=characters.size();
-        DisplayText display=new DisplayText();
         String mess="";
         for (int i=0;i<max;i++)
             {
@@ -138,7 +136,7 @@ public class Team {
                    if(i<max-1)
                        mess=mess+"//";
             }
-        display.display(mess);
+        gi.display(mess);
         
         
     }

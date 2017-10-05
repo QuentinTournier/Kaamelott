@@ -5,11 +5,17 @@
  */
 package KaamelottEvent;
 
+import KaamelottControl.GameInterface;
+
 /**
  *
  * @author nitnek
  */
-public interface Event {
-    public int getType();
-        
+public abstract class Event {
+    protected GameInterface gi;
+    abstract int getType();
+
+    public Event(GameInterface gi){
+        this.gi= gi;
+    }
 }

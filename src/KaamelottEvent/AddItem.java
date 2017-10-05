@@ -6,7 +6,7 @@
 package KaamelottEvent;
 
 import KaamelottCharacter.Characteristic;
-import KaamelottControl.DisplayText;
+import KaamelottControl.GameInterface;
 import KaamelottControl.Team;
 import KaamelottItemization.*;
 
@@ -14,12 +14,13 @@ import KaamelottItemization.*;
  *
  * @author nitnek
  */
-public class AddItem implements Event{
+public class AddItem extends Event{
     private final int type=4;
     private Team team;
     private int nbItem; 
 
-    public AddItem(Team team, int nbItem) {
+    public AddItem(GameInterface gi, Team team, int nbItem) {
+        super(gi);
         this.team = team;
         this.nbItem = nbItem;
     }
@@ -34,10 +35,10 @@ public class AddItem implements Event{
     }*/
     
     public void doAddItem(){
-    DisplayText display=new DisplayText();
-    int nbCharac=0;
-    String characteristic;
-    Item item;
+
+        int nbCharac=0;
+        String characteristic;
+        Item item;
     
         switch(nbItem){
             case 1:
@@ -94,10 +95,10 @@ public class AddItem implements Event{
             }
             
             String messError="Please chose a number between 0 and "+team.getTeamNumber();
-            nbCharac=display.getNumber(0,team.getTeamNumber()-1,mess,messError);
+            nbCharac=gi.getNumber(mess);
             
         }
         team.getCharacterI(nbCharac).addEquipment(item);
-        display.display(team.getCharacterI(nbCharac).getName()+" obtained "+item.getName());
+        gi.display(team.getCharacterI(nbCharac).getName()+" obtained "+item.getName());
     }
 }

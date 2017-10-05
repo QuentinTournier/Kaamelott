@@ -6,6 +6,7 @@
 package KaamelottEvent;
 
 import KaamelottControl.DisplayText;
+import KaamelottControl.GameInterface;
 import KaamelottControl.Team;
 import java.util.List;
 
@@ -13,16 +14,16 @@ import java.util.List;
  *
  * @author nitnek
  */
-public class Narrative implements Event{
+public class Narrative extends Event{
     private List<String> narration;
     private DisplayText display;
     private final int type=3;
     private Team team;
     private int numTell;
 
-    public Narrative(List<String> narration, DisplayText display,Team team,int numTell) {
+    public Narrative(GameInterface gi, List<String> narration, Team team, int numTell) {
+        super(gi);
         this.narration = narration;
-        this.display = display;
         this.team=team;
         this.numTell=numTell;
     }
@@ -83,17 +84,17 @@ public class Narrative implements Event{
                 break;
         }
         
-        display.display("\n" );
+        gi.display("\n" );
         for(int i=0;i<narration.size();i++)
         {
-            display.display(narration.get(i));
+            gi.display(narration.get(i));
             try {
                     Thread.sleep(3000);     //milliseconds
                 } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
         }
-        display.display("\n " );
+        gi.display("\n " );
         
     }
     

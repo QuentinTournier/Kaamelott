@@ -1,6 +1,7 @@
 package KaamelottCharacter;
 import KaamelottCapacities.Capacity;
 import KaamelottControl.DisplayText;
+import KaamelottControl.GameInterface;
 import KaamelottItemization.Armor;
 import KaamelottItemization.Consumable;
 import KaamelottItemization.Effect;
@@ -29,11 +30,12 @@ public abstract class Character {
     private List<Consumable> consumables;
     private int experience;
     private List<Item> equipment;
-    DisplayText display;
+    GameInterface gi;
 
 
     
-    public Character(String name, String className,int level) {
+    public Character(GameInterface gi, String name, String className,int level) {
+        this.gi = gi;
         this.name = name;
         this.className = className;
         this.level =level;
@@ -43,7 +45,6 @@ public abstract class Character {
         capacities = new ArrayList<>();  
         consumables= new ArrayList<>();
         equipment= new ArrayList<>();
-        display=new DisplayText();
         }
     
     public String getName() {
@@ -176,7 +177,7 @@ public abstract class Character {
            }
         mess=mess+max+"- Return";
         String messError="Please chose a number between 0 and "+max;
-        int value=display.getNumber(0,max,mess,messError);
+        int value=gi.getNumber(mess);
         if (value==max)
             return ;
         if(this.getEquipmentI(value) instanceof Armor){
@@ -200,19 +201,19 @@ public abstract class Character {
            }
         mess=mess+max+"- Return";
         String messError="Please chose a number between 0 and "+max;
-        int value=display.getNumber(0,max,mess,messError);
+        int value= gi.getNumber(mess);
         if (value==max)
             return ;
         consumables.get(value).doEffect().applyEffect(this);
     }
     
     public void stats() {
-        display.display(this.name+" : Level "+this.level);
-        display.display("Health="+this.characteristic.get(Characteristic.HEALTH)+"/"+this.hp);
-        display.display("Strength="+this.characteristic.get(Characteristic.STRENGTH));
-        display.display("Defense="+this.characteristic.get(Characteristic.DEFENSE));
-        display.display("Dexterity="+this.characteristic.get(Characteristic.DEXTERITY));
-        display.display("Intelligence="+this.characteristic.get(Characteristic.INTELLIGENCE));
+        gi.display(this.name+" : Level "+this.level + "\n"
+                +"Health="+this.characteristic.get(Characteristic.HEALTH)+"/"+this.hp + "\n"
+                +"Strength="+this.characteristic.get(Characteristic.STRENGTH) + "\n"
+                +"Defense="+this.characteristic.get(Characteristic.DEFENSE) + "\n"
+                +"Dexterity="+this.characteristic.get(Characteristic.DEXTERITY) + "\n"
+                +"Intelligence="+this.characteristic.get(Characteristic.INTELLIGENCE));
         
         
     }

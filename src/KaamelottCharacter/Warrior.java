@@ -1,15 +1,16 @@
 package KaamelottCharacter;
 
 import KaamelottCapacities.Attack;
+import KaamelottControl.GameInterface;
 
 public class Warrior extends Character {
     
-    public Warrior(String name) {
-       this(name,1);
+    public Warrior(GameInterface gi, String name) {
+       this(gi, name,1);
     }
     
-    public Warrior(String name,int level) {
-        super(name,"Warrior",level);
+    public Warrior(GameInterface gi,String name,int level) {
+        super(gi, name,"Warrior",level);
         this.characteristic.put(Characteristic.STRENGTH,30+2*(level-1));
         this.characteristic.put(Characteristic.DEXTERITY,20+2*(level-1));
         this.characteristic.put(Characteristic.INTELLIGENCE,10+2*(level-1));
