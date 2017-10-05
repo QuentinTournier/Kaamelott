@@ -36,16 +36,14 @@ public class CreateCharacter extends Event{
         
         int min=1;
         int max=5;
-        String mess="Chose a class"+"\n";
-        
-        //bloc d'ajout des classes
-            mess=mess+" 1.Crossbowman"+"\n"
-            +" 2.Druid"+"\n"
-            +" 3.Knight"+"\n"
-            +" 4.Thief"+"\n"
-            +" 5.Warrior"+"\n";
-        String messError="Chose a Number between "+min +" and "+max;
-        
+        String [] mess = new String[6];
+        mess[0] = "Chose a class";
+        mess[1] ="Crossbowman";
+        mess[2] ="Druid";
+        mess[3] ="Knight";
+        mess[4] ="Thief";
+        mess[5] ="Warrior";
+
         return gi.getNumber(mess);
     }
     

@@ -21,12 +21,10 @@ import java.util.List;
  */
 public class Scenario {
     private List<Event> events;
-    private DisplayText display;
     private List<Team> teams;
     private GameInterface ui;
 
     public Scenario() {
-        this.display = new DisplayText();
         ui = new UI();
         ui.init();
         teams = new ArrayList();
@@ -179,18 +177,19 @@ public class Scenario {
             default: {
                      break;}
             
-            } 
-            String message="Chose an action \n 1. Use Potion"+"\n"
-            +" 2. Equip Character"+"\n"
-            +" 3. View Stats"+"\n"
-            +" 4. Continue adventure"+"\n";
-            
-            String messError="Chose a number between "+1 +" and "+4;
+            }
+            String [] mess = new String[5];
+            mess[0] = "Chose an action";
+            mess[1] ="Use Potion";
+            mess[2] ="Equip Character";
+            mess[3] ="View Stats";
+            mess[4] ="Continue adventure";
+
         
         int number=0;
         if(events.get(i).getType()==2 ||events.get(i).getType()==4){
         while (number!=4){
-        number = ui.getNumber(message);
+        number = ui.getNumber(mess);
         switch (number) {
             case 1:  teams.get(0).takeObject();
                      break;

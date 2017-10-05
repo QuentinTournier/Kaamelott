@@ -76,51 +76,48 @@ public class Team {
     }
     public void equipCharacter(){
         int max=characters.size();
-        String mess="Which character do you wish to equip ?\n";
+        String[] mess = new String [max+2];
+        mess[0] = "Which character do you wish to equip ?";
         for (int i=0;i<max;i++)
            {
-               mess=mess+i+"-"+this.getCharacterI(i).getName()+"\n";
+               mess[i+1] = this.getCharacterI(i).getName();
            }
-        String messError="Please chose a number between 0 and "+max;
-        mess=mess+max+"- Return";
-        int value= gi.getNumber(mess);
-        if (value==max)
+        mess[max+1]="Return";
+        int value= gi.getNumber(mess)-1;
+        if (value==max+1)
             return ;
         characters.get(value).equip();
     }
     
     public void takeObject(){
         int max=characters.size();
-        String mess="Which character do you wish to use a consumable with ?"+"\n";
+        String[] mess = new String [max+2];
+        mess[0] = "Which character do you wish to use a consumable with ?";
         for (int i=0;i<max;i++)
             {
-                mess=mess+i+"-"+this.getCharacterI(i).getName()+"-"+this.getCharacterI(i).getHp()+"HP"+"\n";
+                mess[i+1] = this.getCharacterI(i).getName()+"-"+this.getCharacterI(i).getHp()+"HP";
             }
-        String messError="Please chose a number between 0 and "+max;
-        mess=mess+max+"- Return";
+        mess[max+1] = "Return";
         int value=gi.getNumber(mess);
-        if (value==max)
+        if (value==max+1)
             return ;
-        characters.get(value).useConsumable();              
+        characters.get(value-1).useConsumable();
     }        
     
     
     public void showStats(){
-            int max=characters.size();
-        String mess="Which character do you wish to see stats ?"+"\n";
+        int max=characters.size();
+        String[] mess = new String [max+2];
+        mess[0] = "Which character do you wish to see stats ?";
         for (int i=0;i<max;i++)
             {
-                mess=mess+i+"-"+this.getCharacterI(i).getName()+"-"+this.getCharacterI(i).getHp()+"HP"+"\n";
+                mess[i+1] = this.getCharacterI(i).getName()+"-"+this.getCharacterI(i).getHp()+"HP";
             }
-        String messError="Please chose a number between 0 and "+max;
-        mess=mess+max+"- Return";
+        mess[max+1] = " Return";
         int value=gi.getNumber(mess);
-        if (value==max)
+        if (value==max+1)
             return ;
-        characters.get(value).stats();        
-        
-        
-        
+        characters.get(value-1).stats();
     }
      
 
@@ -129,7 +126,7 @@ public class Team {
 
     public void showHp(){
         int max=characters.size();
-        String mess="";
+        String mess="You have:  ";
         for (int i=0;i<max;i++)
             {
                    mess=mess+this.getCharacterI(i).getName()+": "+this.getCharacterI(i).getHp()+"HP";

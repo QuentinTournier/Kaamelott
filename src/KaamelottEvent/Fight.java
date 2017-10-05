@@ -37,7 +37,7 @@ public class Fight extends Event {
     
     public void doFight(){
         
-        String message="------------------------------------------------------------------\n You're beginning a fight against: \n";
+        String message="You're beginning a fight against:";
         for (int i=0;i<teamB.getTeamNumber();i++)
         {
          message=message+teamB.getCharacterI(i).getName()+"\n";   

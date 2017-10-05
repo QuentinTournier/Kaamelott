@@ -84,18 +84,11 @@ public class Narrative extends Event{
                 break;
         }
         
-        gi.display("\n" );
         for(int i=0;i<narration.size();i++)
         {
             gi.display(narration.get(i));
-            try {
-                    Thread.sleep(3000);     //milliseconds
-                } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
         }
-        gi.display("\n " );
-        
+
     }
     
 }

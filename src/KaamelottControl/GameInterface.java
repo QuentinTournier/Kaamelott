@@ -8,7 +8,7 @@ public interface GameInterface {
 
     void display(String message);
 
-    int getNumber(String message);
+    int getNumber(String[] message);
 
     String getName(String message);
 

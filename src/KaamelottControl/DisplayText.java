@@ -34,6 +34,11 @@ public class DisplayText implements GameInterface {
     }
 
     @Override
+    public int getNumber(String[] message) {
+        return 0;
+    }
+
+
     public int getNumber(String message) {
         return getNumber(1,3,message,"erreur");
     }

@@ -31,15 +31,14 @@ public class AddCapacity extends Event {
     
     
     public void doAddCapacity(Team team){
-        DisplayText display=new DisplayText();
-        String mess="Which character should learn "+capacity.getName() +" ?\n";
         int max=team.getTeamNumber();
-        for (int i=0;i<max;i++)
+        String[] mess = new String [max+1];
+        mess[0]="Which character should learn "+capacity.getName() +" ?";
+        for (int i=1;i<=max;i++)
            {
-               mess=mess+i+"-"+team.getCharacterI(i).getName()+"\n";
+               mess[i]=team.getCharacterI(i).getName();
            }
-        String messError="Please chose a number between 0 and "+ (max-1);
-        int nbCharac=gi.getNumber(mess);
+        int nbCharac=gi.getNumber(mess)-1;
         
         team.getCharacterI(nbCharac).addCapacity(capacity);
     }

@@ -37,14 +37,7 @@ public class Turn {
    public Character choseCharacter(Controller cont,int tour){
        Team team;
        List<Integer> listNb= new ArrayList();
-       String mess;
-       String message;
-       
-           
-       if (tour%2==0)      
-           mess="Chose your character \n";
-       else
-           mess="Chose your target \n";
+
        
        if (tour%3==0){ 
            team=teamA;
@@ -53,6 +46,14 @@ public class Turn {
        {
            team=teamB;
        }
+       String[] mess = new String[team.getTeamNumber()+1];
+       String message;
+
+
+       if (tour%2==0)
+           mess[0]="Chose your character";
+       else
+           mess[0]="Chose your target";
        if (cont instanceof AIController)
        {
            for (int i=0;i<team.getTeamNumber();i++){
@@ -62,37 +63,39 @@ public class Turn {
            
        }
        int nbCharacter=team.getTeamNumber();
-           for (int i=0;i<team.getTeamNumber();i++)
-           {
-               if(team.getCharacterI(i).isAlive()){
-                   message=team.getCharacterI(i).getHp()+"HP\n";
-                   listNb.add(i);
-               }
-                                 
-                else
-                   message="dead \n";
-               mess=mess+i+"-"+team.getCharacterI(i).getName()+" "+message;
+       for (int i=0;i<team.getTeamNumber();i++)
+       {
+           if(team.getCharacterI(i).isAlive()){
+               message=team.getCharacterI(i).getHp()+"HP\n";
+               listNb.add(i);
            }
+
+            else
+               message="dead \n";
+           mess[i+1] = team.getCharacterI(i).getName()+" "+message;
+       }
      int numCharac= enterCharac(cont,listNb,mess);
      return team.getCharacterI(numCharac);
    } 
    
-   public int enterCharac(Controller Cont,List<Integer> listNb,String mess){
+   public int enterCharac(Controller Cont,List<Integer> listNb,String[] mess){
 
        
      if (Cont instanceof HumanController )
      {
-       return gi.getNumber(mess);}
+       return gi.getNumber(mess)-1;}
      else 
          return listNb.get(0);
    }
    
    public Action choseAction(Controller cont,Character character){
-        String mess="Chose what to do: \n"+"0-Attack \n"+"1-Use object \n";
+        String[] mess = new String[3];
+        mess[0]= "Chose what" + character.getName() +" will do:";
+        mess[1]= "Attack";
+        mess[2]= "Use object";
         int num=0;
-            String messError="chose a number between 0 and 1";
-        if (cont instanceof HumanController)    
-                num= gi.getNumber(mess);
+        if (cont instanceof HumanController)
+                num= gi.getNumber(mess)-1;
         if (num==0)
            return choseAttack(cont,character);
         else
@@ -100,35 +103,39 @@ public class Turn {
    }
    
    public Action choseConsumable(Controller cont,Character character){
-       List<Consumable> listConsumables= character.getConsumables();
-        String mess="Chose an object to use";
+        List<Consumable> listConsumables= character.getConsumables();
         int max=listConsumables.size();
-        for(int i=0; i<max; i++) 
-            {mess=mess+"\n"+i+"-"+listConsumables.get(i).getName()+"("+listConsumables.get(i).getNumber()+")";}
-            mess=mess+"\n"+max+" -Return";
-            String messError="chose a number between 0 and "+max;
+        String[] mess = new String[max+2];
+        mess[0] = "Chose an object to use";
+
+        for(int i=1; i<=max; i++){
+            mess[i] = listConsumables.get(i).getName()+"("+listConsumables.get(i).getNumber()+")";
+        }
+       mess[max+1] = "Return";
        int num= gi.getNumber(mess);
-       if(num==max)
+       if(num==max+2)
            return choseAction(cont,character);
        
-       return character.getConsumableI(num);
+       return character.getConsumableI(num-1);
    }
    
    public Action choseAttack(Controller cont,Character character){
        int max=character.getNbCapacity();
-        String mess="Chose an action \n";      
+        String[] mess =new String[max+2];
+        mess[0] = "Chose an action";
         if(cont instanceof AIController)
             return character.getCapacityI(0);
-        for(int i=0; i<max; i++) 
-            {mess=mess+i+"-"+character.getNameCapacityI(i)+"\n";}
-        mess=mess+max+"-Return";
+        for(int i=0; i<max; i++){
+            mess [i+1] = character.getNameCapacityI(i);
+        }
+
+        mess [max+1] = "Return";
         
-            String messError="chose a number between 0 and "+max;
        int num= gi.getNumber(mess);
-       if(num==max)
+       if(num==max+2)
             return choseAction(cont,character);
             
-       return character.getCapacityI(num);
+       return character.getCapacityI(num-1);
    }
    
    public void playTurn(){
@@ -142,9 +149,7 @@ public class Turn {
        for(int i=0;i<teamA.getTeamNumber();i++){
            
            changeTarget=true;
-           if(teamA.getCharacterI(i).isAlive()){             
-            if(contA instanceof HumanController)
-                   gi.display("\n"+teamA.getCharacterI(i).getName()+" "+"must");
+           if(teamA.getCharacterI(i).isAlive()){
            actionA.add(choseAction(contA,teamA.getCharacterI(i)));
            getActionI(actionA,j).setSource(teamA.getCharacterI(i));
         

@@ -88,14 +88,13 @@ public class AddItem extends Event{
         }
 
         if(nbItem!=1){
-            String mess="Chose which character will get this:"+item.getName()+"(+"+item.getValue()+" "+characteristic+") \n";
+            String [] mess = new String[team.getTeamNumber()+1];
+            mess[0] ="Chose which character will get this:"+item.getName()+"(+"+item.getValue()+" "+characteristic+") \n";
             for (int i=0;i<team.getTeamNumber();i++)
             {
-                mess=mess+i+"-"+team.getCharacterI(i).getName()+"\n";
+                mess[i+1] = team.getCharacterI(i).getName();
             }
-            
-            String messError="Please chose a number between 0 and "+team.getTeamNumber();
-            nbCharac=gi.getNumber(mess);
+            nbCharac = gi.getNumber(mess)-1;
             
         }
         team.getCharacterI(nbCharac).addEquipment(item);

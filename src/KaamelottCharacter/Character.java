@@ -157,7 +157,8 @@ public abstract class Character {
     
     public Item getEquipmentI(int i){
         return equipment.get(i);
-        
+
+
     }
     
     public void addEquipment(Item item){
@@ -166,18 +167,21 @@ public abstract class Character {
 
     public void equip() {
         int max=equipment.size();
-        String mess="Which equipment do you wish to equip ? \n";
+        String[] mess = new String[max+2];
+        String message;
+        mess[0] = "Which equipment do you wish to equip ?";
         for (int i=0;i<max;i++)
            {
+               message= "";
                if (this.getEquipmentI(i).isEquiped())
-                   mess=mess+"(Equiped)";
-               mess=mess+i+"-"+this.getEquipmentI(i).getName()+"(+";
-               mess=mess+this.getEquipmentI(i).getValue()+this.getEquipmentI(i).getCharac()+" )\n";
+                   message=message+"(Equiped)";
+               message=message+i+"-"+this.getEquipmentI(i).getName()+"(+";
+               message=message+this.getEquipmentI(i).getValue()+this.getEquipmentI(i).getCharac()+" )\n";
+               mess[i+1] = message;
 
            }
-        mess=mess+max+"- Return";
-        String messError="Please chose a number between 0 and "+max;
-        int value=gi.getNumber(mess);
+        mess[max+1] = "Return";
+        int value=gi.getNumber(mess)-1;
         if (value==max)
             return ;
         if(this.getEquipmentI(value) instanceof Armor){
@@ -191,20 +195,22 @@ public abstract class Character {
     }
     public void useConsumable() {
         int max=consumables.size();
-        String mess="Which consumable do you wish to use ? ";
+        String[] mess = new String[max+2];
+        mess[0] = "Which consumable do you wish to use ? ";
         for (int i=0;i<consumables.size();i++)
            {
-               if(this.consumables.get(i).getNumber()>0)
-                mess=mess+"\n"+i+"-"+this.getConsumableI(i).getName()+" ("+this.getConsumableI(i).getNumber()+")\n";
+               if(this.consumables.get(i).getNumber()>0){
+                   mess[i+1] = this.getConsumableI(i).getName()+" ("+this.getConsumableI(i).getNumber()+")";
+               }
+
                else 
                    max--;
            }
-        mess=mess+max+"- Return";
-        String messError="Please chose a number between 0 and "+max;
+        mess[max+1]= "Return";
         int value= gi.getNumber(mess);
-        if (value==max)
+        if (value==max+1)
             return ;
-        consumables.get(value).doEffect().applyEffect(this);
+        consumables.get(value-1).doEffect().applyEffect(this);
     }
     
     public void stats() {
