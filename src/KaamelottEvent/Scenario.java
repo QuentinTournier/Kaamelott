@@ -31,16 +31,16 @@ public class Scenario {
         events = new ArrayList();
     }
 
-  
+
     public void addEvent(Event event){
         events.add(event);
     }
     public void addTeam(){
-        List<KaamelottCharacter.Character> members=new ArrayList();     
+        List<KaamelottCharacter.Character> members=new ArrayList();
         Team teamA=new Team(ui,members,0);
         teams.add(teamA);
     }
-    
+
     public void makeScenario()
     {
         createTeams();
@@ -76,21 +76,21 @@ public class Scenario {
         addEvent(makeTell(9));
         addEvent(makeFight(teams.get(0),teams.get(6),350));
         addEvent(makeTell(9));
-        
-        
 
-        
-        
-             
+
+
+
+
+
     }
-    
-    
+
+
     public void createTeams(){
-        addTeam();    
+        addTeam();
         //team 1
         addTeam();
-         teams.get(1).addCharacterTeam(new Druid(ui, "XxNecroxX"));
-         teams.get(1).addCharacterTeam(new Druid(ui, "OoNecrooO"));
+        teams.get(1).addCharacterTeam(new Druid(ui, "XxNecroxX"));
+        teams.get(1).addCharacterTeam(new Druid(ui, "OoNecrooO"));
         //team 2
         addTeam();
         teams.get(2).addCharacterTeam(new Crossbowman(ui, "Bobo"));
@@ -117,66 +117,79 @@ public class Scenario {
         teams.get(6).addCharacterTeam(new Druid(ui, "DarkWizard"));
         teams.get(6).addCharacterTeam(new Druid(ui, "DarkSidius"));
         teams.get(6).addCharacterTeam(new Druid(ui, "DarkMaul"));
-        
-        
-        
+
+
+
 
     }
-    
+
     public void gainObject(int  nbItem){
         AddItem addItem= new AddItem(ui, teams.get(0),nbItem);
-         addEvent(addItem);
+        addEvent(addItem);
     }
-    
+
     public Fight makeFight(Team teamA,Team teamB,int xp )
-    {        
+    {
 
         Fight fight=new Fight(ui, teamA,teamB,xp);
         return fight;
     }
-    
+
     public CreateCharacter makeCreateCharacter()
     {
         CreateCharacter create=new CreateCharacter(ui);
         return create;
     }
-    
+
     public Narrative makeTell(int numTell)
     {
         List<String> narration= new ArrayList();
-        
+
         Narrative tell =new Narrative(ui,narration,teams.get(0),numTell);
         return tell;
     }
     public AddCapacity makeCapacity(int nbCapacity)
     {
-        
+
         AddCapacity addCapacity= new AddCapacity(ui, nbCapacity);
         return addCapacity;
     }
-    
-     public void readScenario()
+
+    public void readScenario()
     {
         ui.display("In this story, the 1st character you chose will be the main character, and the two followings will be his partners");
-        ui.display("If you want, you can call the main character Arthur, and his partners Lancelot and Merlin");
+
+        //Check if the user wants to start with defaults charac
+        boolean autostart = false;
+        String[] message = new String [3];
+        message[0] = "Do you want to start the story with the Arthur, Lancelot and Merlin ?";
+        message[1] = "Yes";
+        message[2] = "No, I want to create my 3 own characters";
+        autostart = ui.getNumber(message) == 1 ? true : false;
+        if(autostart){
+            teams.get(0).addCharacterTeam(new Knight(ui, "Arthur"));
+            teams.get(0).addCharacterTeam(new Druid(ui, "Merlin"));
+            teams.get(0).addCharacterTeam(new Knight(ui, "Lancelot"));
+        }
+
         for(int i=0;i<events.size();i++)
         {
 
             switch (events.get(i).getType()) {
-            case 0:  ((AddCapacity)events.get(i)).doAddCapacity(teams.get(0));
-                     break;
-            case 1:  ((CreateCharacter)events.get(i)).addCharac(teams.get(0));
-                     break;
-            case 2:  ((Fight)events.get(i)).doFight();
-                     break;
-            case 3:  ((Narrative)events.get(i)).Tell();
-                     break;
-            case 4:  ((AddItem)events.get(i)).doAddItem();
-                     break;
-            
-            default: {
-                     break;}
-            
+                case 0:  ((AddCapacity)events.get(i)).doAddCapacity(teams.get(0));
+                    break;
+                case 1:  if(i<5 && !autostart)((CreateCharacter)events.get(i)).addCharac(teams.get(0));
+                    break;
+                case 2:  ((Fight)events.get(i)).doFight();
+                    break;
+                case 3:  ((Narrative)events.get(i)).Tell();
+                    break;
+                case 4:  ((AddItem)events.get(i)).doAddItem();
+                    break;
+
+                default: {
+                    break;}
+
             }
             String [] mess = new String[5];
             mess[0] = "Chose an action";
@@ -185,29 +198,29 @@ public class Scenario {
             mess[3] ="View Stats";
             mess[4] ="Continue adventure";
 
-        
-        int number=0;
-        if(events.get(i).getType()==2 ||events.get(i).getType()==4){
-        while (number!=4){
-        number = ui.getNumber(mess);
-        switch (number) {
-            case 1:  teams.get(0).takeObject();
-                     break;
-            case 2:  
-                    teams.get(0).equipCharacter();                   
-                     break;
-            case 3:  
-                    teams.get(0).showStats();
-                     break;
-            case 4:
-            
-            default: {
-                     break;}
-            
-                    }     
+
+            int number=0;
+            if(events.get(i).getType()==2 ||events.get(i).getType()==4){
+                while (number!=4){
+                    number = ui.getNumber(mess);
+                    switch (number) {
+                        case 1:  teams.get(0).takeObject();
+                            break;
+                        case 2:
+                            teams.get(0).equipCharacter();
+                            break;
+                        case 3:
+                            teams.get(0).showStats();
+                            break;
+                        case 4:
+
+                        default: {
+                            break;}
+
+                    }
                 }
-            } 
+            }
         }
     }
-    
+
 }

@@ -34,9 +34,9 @@ public class AddCapacity extends Event {
         int max=team.getTeamNumber();
         String[] mess = new String [max+1];
         mess[0]="Which character should learn "+capacity.getName() +" ?";
-        for (int i=1;i<=max;i++)
+        for (int i=0; i<max;i++)
            {
-               mess[i]=team.getCharacterI(i).getName();
+               mess[i+1]=team.getCharacterI(i).getName();
            }
         int nbCharac=gi.getNumber(mess)-1;
         

@@ -13,15 +13,17 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.border.Border;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class UI extends JFrame implements ActionListener, ItemListener, GameInterface {
     private static final int SCREEN_WIDTH = 1200;
@@ -43,6 +45,7 @@ public class UI extends JFrame implements ActionListener, ItemListener, GameInte
         f = new JFrame("Kaamelott");
         f.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         f.getContentPane().add(panel);
+        music();
         this.display("image_full_accueil");
         this.display("image_half_charac");
     }
@@ -201,6 +204,21 @@ public class UI extends JFrame implements ActionListener, ItemListener, GameInte
         panel.remove(rm);
         panel.revalidate();
         panel.repaint();
+    }
+
+    public void music(){
+        try{
+            String song = "opening.wav";
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("./songs/"+song));
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        }
+        catch(Exception ex)
+        {
+            System.out.print(ex);
+        }
     }
 
 }
